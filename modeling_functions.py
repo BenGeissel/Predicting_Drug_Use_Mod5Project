@@ -42,7 +42,7 @@ def run_logreg(X_train, X_test, y_train, y_test, C, penalty):
     
     # Fit model and get predictions
     model = LogisticRegression(C = C, penalty = penalty, fit_intercept = False, solver = 'liblinear')
-    X_train_res, y_train_res = smote_train(X_train, y_train)
+    X_train_res, y_train_res = helper_functions.smote_train(X_train, y_train)
     model_fit = model.fit(X_train_res, y_train_res)
     y_hat_test = model.predict(X_test)
     
@@ -102,7 +102,7 @@ def run_NB_Gaussian(X_train, X_test, y_train, y_test):
         
     # Fit model and get predictions
     model = GaussianNB()
-    X_train_res, y_train_res = smote_train(X_train, y_train)
+    X_train_res, y_train_res = helper_functions.smote_train(X_train, y_train)
     model_fit = model.fit(X_train_res, y_train_res)
     y_hat_test = model.predict(X_test)
     
@@ -162,7 +162,7 @@ def run_knn(X_train, X_test, y_train, y_test, k):
     
     # Fit model and get predictions
     model = KNeighborsClassifier(n_neighbors = k)
-    X_train_res, y_train_res = smote_train(X_train, y_train)
+    X_train_res, y_train_res = helper_functions.smote_train(X_train, y_train)
     model_fit = model.fit(X_train_res, y_train_res)
     y_hat_test = model.predict(X_test)
 
@@ -222,7 +222,7 @@ def run_decision_tree(X_train, X_test, y_train, y_test):
     
     # Fit model and get predictions
     model = DecisionTreeClassifier()
-    X_train_res, y_train_res = smote_train(X_train, y_train)
+    X_train_res, y_train_res = helper_functions.smote_train(X_train, y_train)
     model_fit = model.fit(X_train_res, y_train_res)
     y_hat_test = model.predict(X_test)
     
@@ -275,14 +275,14 @@ def run_random_forest(X_train, X_test, y_train, y_test, n):
     
     Input: Train and Test Data. Optimized n parameter.
     
-    Output: Dataframe with metric scores. Confusion Matrix and ROC Curve plots.
+    Output: Dataframe with metric scores. Confusion Matrix and ROC Curve plots. Feature Importance Plot.
     '''
     
     print('Random Forest Results:')
     
     # Fit model and get predictions
     model = RandomForestClassifier(n_estimators = n)
-    X_train_res, y_train_res = smote_train(X_train, y_train)
+    X_train_res, y_train_res = helper_functions.smote_train(X_train, y_train)
     model_fit = model.fit(X_train_res, y_train_res)
     y_hat_test = model.predict(X_test)
     
@@ -320,6 +320,18 @@ def run_random_forest(X_train, X_test, y_train, y_test, n):
     plt.tight_layout()
     plt.show()
     
+    # Plot feature importances
+    features = list(X_train.columns)
+    importances = model.feature_importances_
+    indices = np.argsort(importances)
+    plt.figure(figsize = (10,10))
+    plt.title('Feature Importances')
+    plt.barh(range(len(indices)), importances[indices], color='darkblue', align='center')
+    plt.yticks(range(len(indices)), [features[i] for i in indices])
+    plt.xlabel('Relative Importance')
+    plt.tight_layout()
+    plt.show()
+    
     print('-'*75)
     
     return pd.DataFrame({
@@ -342,7 +354,7 @@ def run_svc(X_train, X_test, y_train, y_test):
     
     # Fit model and get predictions
     model = SVC(probability = True)
-    X_train_res, y_train_res = smote_train(X_train, y_train)
+    X_train_res, y_train_res = helper_functions.smote_train(X_train, y_train)
     model_fit = model.fit(X_train_res, y_train_res)
     y_hat_test = model.predict(X_test)
 
@@ -402,7 +414,7 @@ def run_linear_svc(X_train, X_test, y_train, y_test):
     
     # Fit model and get predictions
     model = LinearSVC()
-    X_train_res, y_train_res = smote_train(X_train, y_train)
+    X_train_res, y_train_res = helper_functions.smote_train(X_train, y_train)
     model_fit = model.fit(X_train_res, y_train_res)
     y_hat_test = model.predict(X_test)
     
@@ -448,7 +460,7 @@ def run_sgd(X_train, X_test, y_train, y_test):
     
     # Fit model and get predictions
     model = SGDClassifier()
-    X_train_res, y_train_res = smote_train(X_train, y_train)
+    X_train_res, y_train_res = helper_functions.smote_train(X_train, y_train)
     clf = model.fit(X_train_res, y_train_res)
     calibrator = CalibratedClassifierCV(clf, cv='prefit')
     model_fit = calibrator.fit(X_train_res, y_train_res)
