@@ -9,7 +9,7 @@ Run numerous classification models for each of 17 different drugs in the dataset
 - Fit Numerous Classification Models (Logistic Regression, Decision Tree, KNN, SVM, etc...)
 - Predict whether or not a certain person has used the drug
 - Determine which models work best for each combination of drug and perfomance metric
-
+- Determine which features are the most important
 
 ### Responsibilities:
 - ETL on drug use data
@@ -17,6 +17,7 @@ Run numerous classification models for each of 17 different drugs in the dataset
 - Create helper functions
 - Create grid search functions to optimize parameters for certain classification models
 - Create functions to run each model and output confusion matrices and ROC curves
+- Create feature importance plots for Random Forest models
 - Run all models on all drugs
 - Determine best performing model for each combination of drug and performance metric
 
